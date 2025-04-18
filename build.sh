@@ -4,8 +4,8 @@ set -e
 # ====== Configurable Versions ======
 TMUX_VERSION=${3:-3.5a}
 LIBEVENT_VERSION=${4:-2.1.12}
-OPENSSL_VERSION=${5:-3.3.0}
-UTF8PROC_VERSION=${6:-2.9.0}
+OPENSSL_VERSION=${5:-3.0.16}
+UTF8PROC_VERSION=${6:-2.10.0}
 
 # ====== Directories ======
 INSTALL_PREFIX=$1
@@ -81,7 +81,13 @@ export LIBUTF8PROC_LIBS="$INSTALL_PREFIX/lib/libutf8proc.a"
 make -j"$(sysctl -n hw.ncpu)"
 make install
 
+# ====== Cleanup ======
+echo ""
+echo "Cleaning up build files..."
+
+rm -rf "$BUILD_DIR"
+
 echo ""
 echo "tmux $TMUX_VERSION installed successfully in $INSTALL_PREFIX."
 echo "You can run it directly: $INSTALL_PREFIX/bin/tmux"
-echo "No DYLD_LIBRARY_PATH or install_name_tool needed!"
+echo "Or add $INSTALL_PREFIX/bin to your PATH."

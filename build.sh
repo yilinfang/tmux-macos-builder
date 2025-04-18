@@ -60,8 +60,8 @@ make clean
 make -j"$(sysctl -n hw.ncpu)" libutf8proc.a
 make prefix="$INSTALL_PREFIX" install
 
-# ====== Build tmux (link statically to deps) ======
-echo "Building tmux $TMUX_VERSION (static deps)..."
+# ====== Build tmux ======
+echo "Building tmux $TMUX_VERSION ..."
 cd "$BUILD_DIR"
 curl -LO "https://github.com/tmux/tmux/releases/download/$TMUX_VERSION/tmux-$TMUX_VERSION.tar.gz"
 tar -xzf "tmux-$TMUX_VERSION.tar.gz"

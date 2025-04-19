@@ -9,6 +9,9 @@ A script to automatically build tmux on MacOS without Homebrew or MacPorts.
 ## Usage
 
 ```bash
+git clone https://github.com/yilinfang/tmux-macos-builder.git
+cd tmux-macos-builder
+chmod +x build.sh
 ./build.sh [install_prefix] [build_dir] [tmux_version] [libevent_version] [openssl_version] [utf8proc_version]
 ```
 

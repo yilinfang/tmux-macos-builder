@@ -14,7 +14,7 @@ A script to automatically build tmux on MacOS without Homebrew or MacPorts.
 
 ## Arguments
 
-- `install_prefix`: The directory where tmux and its dependencies will be installed. Default is `$PWD/bin`.
+- `install_prefix`: The directory where tmux and its dependencies will be installed. Default is `$PWD/tmux`.
 - `build_dir`: The directory where the build will take place. Default is `$PWD/build`.
 - `tmux_version`: The version of tmux to build. Default is `3.5a`.
 - `libevent_version`: The version of libevent to build. Default is `2.1.12`.

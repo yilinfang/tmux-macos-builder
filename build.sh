@@ -8,14 +8,33 @@ OPENSSL_VERSION=${5:-3.0.16}
 UTF8PROC_VERSION=${6:-2.10.0}
 
 # ====== Directories ======
-INSTALL_PREFIX=$1
-BUILD_DIR=$2
+INSTALL_PREFIX=${1:-$PWD/bin}
+BUILD_DIR=${2:-$PWD/build}
 
-if [ -z "$INSTALL_PREFIX" ] || [ -z "$BUILD_DIR" ]; then
-  echo "Usage: $0 <install_prefix> <build_dir> [tmux_version] [libevent_version] [openssl_version] [utf8proc_version]"
-  exit 1
+# Print the usage message
+usage() {
+  echo "Usage: $0 [install_prefix] [build_dir] [tmux_version] [libevent_version] [openssl_version] [utf8proc_version]"
+  echo "Example: $0 ~/bin ~/build 3.5a 2.1.12 3.0.16 2.10.0"
+}
+
+# Print the usage message
+usage
+
+# Print the parameters
+echo "Installation Parameters:"
+echo "  Install prefix: $INSTALL_PREFIX"
+echo "  Build directory: $BUILD_DIR"
+echo "  tmux version: $TMUX_VERSION"
+echo "  libevent version: $LIBEVENT_VERSION"
+echo "  openssl version: $OPENSSL_VERSION"
+echo "  utf8proc version: $UTF8PROC_VERSION"
+
+# Add confirmation prompt
+read -p "Do you want to proceed with the installation using these parameters? (y/n): " confirm
+if [[ $confirm != [yY] && $confirm != [yY][eE][sS] ]]; then
+  echo "Installation canceled."
+  exit 0
 fi
-
 if ! xcode-select -p &>/dev/null; then
   echo "Xcode Command Line Tools are not installed. Please install them and try again."
   exit 1

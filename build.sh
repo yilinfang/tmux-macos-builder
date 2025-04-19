@@ -8,7 +8,7 @@ OPENSSL_VERSION=${5:-3.0.16}
 UTF8PROC_VERSION=${6:-2.10.0}
 
 # ====== Directories ======
-INSTALL_PREFIX=${1:-$PWD/bin}
+INSTALL_PREFIX=${1:-$PWD/tmux}
 BUILD_DIR=${2:-$PWD/build}
 
 # Print the usage message

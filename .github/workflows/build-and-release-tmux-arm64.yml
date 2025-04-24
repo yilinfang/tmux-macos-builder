@@ -19,15 +19,15 @@ jobs:
 
       - name: Run static build script (auto-confirm)
         run: |
-          mkdir -p /tmp/tmux/install
-          mkdir -p /tmp/tmux/build
+          mkdir -p ~/install
+          mkdir -p ~/build
           chmod +x ./build.sh
-          echo y | ./build.sh /tmp/tmux/install /tmp/tmux/build
+          echo y | ./build.sh ~/install ~/build
 
       - name: Package tmux binary
         run: |
           mkdir -p dist
-          cp /tmp/tmux/install/tmux/bin/tmux dist/tmux-macos-arm64-${{ github.ref_name }}
+          cp ~/install/tmux/bin/tmux dist/tmux-macos-arm64-${{ github.ref_name }}
 
       - name: Upload binary to release
         uses: softprops/action-gh-release@v2

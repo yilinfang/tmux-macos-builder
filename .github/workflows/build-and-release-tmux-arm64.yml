@@ -19,21 +19,22 @@ jobs:
 
       - name: Run static build script (auto-confirm)
         run: |
-          mkdir -p ~/install
-          mkdir -p ~/build
+          mkdir -p ./install
+          mkdir -p ./build
           chmod +x ./build.sh
           export PATH="/opt/homebrew/opt/ncurses/bin:$PATH"
-          echo y | ./build.sh ~/install ~/build
+          echo y | ./build.sh ./install ./build
 
       - name: Package tmux binary
         run: |
-          mkdir -p ~/dist/tmux-macos-arm64-${{ github.ref_name }}
-          cp ~/install/bin/tmux ~/dist/tmux-macos-arm64-${{ github.ref_name }}/tmux
-          zip -r ~/dist/tmux-macos-arm64-${{ github.ref_name }}.zip ~/dist/tmux-macos-arm64-${{ github.ref_name }}
+          mkdir -p dist/tmux-macos-arm64-${{ github.ref_name }}
+          cp install/bin/tmux dist/tmux-macos-arm64-${{ github.ref_name }}/tmux
+          zip -r dist/tmux-macos-arm64-${{ github.ref_name }}.zip dist/tmux-macos-arm64-${{ github.ref_name }}
 
-      - name: Upload binary to release
-        uses: softprops/action-gh-release@v2
+      - name: Create release
+        id: create_release
+        uses: softprops/action-gh-release@v1
         with:
-          files: ~/dist/tmux-macos-arm64-${{ github.ref_name }}.zip
+          files: dist/tmux-macos-arm64-${{ github.ref_name }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

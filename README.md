@@ -22,5 +22,5 @@ chmod +x build.sh
 - `tmux_version`: The version of tmux to build. Default is `3.5a`.
 - `libevent_version`: The version of libevent to build. Default is `2.1.12`.
 - `ncurses_version`: The version of ncurses to build. Default is `6.5`.
-- `openssl_version`: The version of OpenSSL to build. Default is `3.0.16`.
+- `openssl_version`: The version of OpenSSL to build. Default is `3.4.1`.
 - `utf8proc_version`: The version of utf8proc to build. Default is `2.10.0`.

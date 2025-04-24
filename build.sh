@@ -5,7 +5,7 @@ set -e
 TMUX_VERSION=${3:-3.5a}
 LIBEVENT_VERSION=${4:-2.1.12}
 NCURSES_VERSION=${5:-6.5}
-OPENSSL_VERSION=${6:-3.0.16}
+OPENSSL_VERSION=${6:-3.4.1}
 UTF8PROC_VERSION=${7:-2.10.0}
 
 # ====== Directories ======
@@ -15,7 +15,7 @@ BUILD_DIR=${2:-$PWD/build}
 # Print the usage message
 usage() {
   echo "Usage: $0 [install_prefix] [build_dir] [tmux_version] [libevent_version] [ncurses_version] [openssl_version] [utf8proc_version]"
-  echo "Example: $0 ~/bin ~/build 3.5a 2.1.12 6.5 3.0.16 2.10.0"
+  echo "Example: $0 ~/bin ~/build 3.5a 2.1.12 6.5 3.4.1 2.10.0"
 }
 
 usage

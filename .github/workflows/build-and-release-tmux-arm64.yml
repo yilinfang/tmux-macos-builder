@@ -27,12 +27,13 @@ jobs:
 
       - name: Package tmux binary
         run: |
-          mkdir -p dist
-          cp ~/install/tmux/bin/tmux dist/tmux-macos-arm64-${{ github.ref_name }}
+          mkdir -p ~/dist/tmux-macos-arm64-${{ github.ref_name }}
+          cp ~/install/bin/tmux ~/dist/tmux-macos-arm64-${{ github.ref_name }}/tmux
+          zip -r ~/dist/tmux-macos-arm64-${{ github.ref_name }}.zip ~/dist/tmux-macos-arm64-${{ github.ref_name }}
 
       - name: Upload binary to release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/tmux-macos-arm64-${{ github.ref_name }}
+          files: ~/dist/tmux-macos-arm64-${{ github.ref_name }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

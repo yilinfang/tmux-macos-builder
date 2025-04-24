@@ -22,6 +22,7 @@ jobs:
           mkdir -p ~/install
           mkdir -p ~/build
           chmod +x ./build.sh
+          export PATH="/opt/homebrew/opt/ncurses/bin:$PATH"
           echo y | ./build.sh ~/install ~/build
 
       - name: Package tmux binary

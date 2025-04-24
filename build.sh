@@ -4,8 +4,9 @@ set -e
 # ====== Configurable Versions ======
 TMUX_VERSION=${3:-3.5a}
 LIBEVENT_VERSION=${4:-2.1.12}
-OPENSSL_VERSION=${5:-3.0.16}
-UTF8PROC_VERSION=${6:-2.10.0}
+NCURSES_VERSION=${5:-6.5}
+OPENSSL_VERSION=${6:-3.0.16}
+UTF8PROC_VERSION=${7:-2.10.0}
 
 # ====== Directories ======
 INSTALL_PREFIX=${1:-$PWD/tmux}
@@ -13,23 +14,21 @@ BUILD_DIR=${2:-$PWD/build}
 
 # Print the usage message
 usage() {
-  echo "Usage: $0 [install_prefix] [build_dir] [tmux_version] [libevent_version] [openssl_version] [utf8proc_version]"
-  echo "Example: $0 ~/bin ~/build 3.5a 2.1.12 3.0.16 2.10.0"
+  echo "Usage: $0 [install_prefix] [build_dir] [tmux_version] [libevent_version] [ncurses_version] [openssl_version] [utf8proc_version]"
+  echo "Example: $0 ~/bin ~/build 3.5a 2.1.12 6.5 3.0.16 2.10.0"
 }
 
-# Print the usage message
 usage
 
-# Print the parameters
 echo "Installation Parameters:"
 echo "  Install prefix: $INSTALL_PREFIX"
 echo "  Build directory: $BUILD_DIR"
 echo "  tmux version: $TMUX_VERSION"
 echo "  libevent version: $LIBEVENT_VERSION"
+echo "  ncurses version: $NCURSES_VERSION"
 echo "  openssl version: $OPENSSL_VERSION"
 echo "  utf8proc version: $UTF8PROC_VERSION"
 
-# Add confirmation prompt
 read -p "Do you want to proceed with the installation using these parameters? (y/n): " confirm
 if [[ $confirm != [yY] && $confirm != [yY][eE][sS] ]]; then
   echo "Installation canceled."
@@ -79,6 +78,28 @@ make clean
 make -j"$(sysctl -n hw.ncpu)" libutf8proc.a
 make prefix="$INSTALL_PREFIX" install
 
+# ====== Build ncurses (static only) ======
+echo "Building ncurses $NCURSES_VERSION (static)..."
+cd "$BUILD_DIR"
+curl -LO "https://ftp.gnu.org/gnu/ncurses/ncurses-$NCURSES_VERSION.tar.gz"
+tar -xzf "ncurses-$NCURSES_VERSION.tar.gz"
+cd "ncurses-$NCURSES_VERSION"
+./configure --prefix="$INSTALL_PREFIX" --with-shared=no --with-normal --with-cxx-binding --with-cxx --enable-widec --with-static --without-debug --without-ada --without-manpages --without-tests --without-progs
+make -j"$(sysctl -n hw.ncpu)"
+make install
+
+# For wide-character support, create symlinks for ncursesw
+cd "$INSTALL_PREFIX/lib"
+for lib in ncurses form panel menu; do
+  if [ -f "lib${lib}w.a" ]; then
+    ln -sf "lib${lib}w.a" "lib${lib}.a"
+  fi
+done
+cd "$INSTALL_PREFIX/include"
+if [ -d "ncursesw" ]; then
+  ln -sf ncursesw/* .
+fi
+
 # ====== Build tmux ======
 echo "Building tmux $TMUX_VERSION ..."
 cd "$BUILD_DIR"
@@ -87,7 +108,7 @@ tar -xzf "tmux-$TMUX_VERSION.tar.gz"
 cd "tmux-$TMUX_VERSION"
 
 # Use static libraries for dependencies
-export LIBS="$INSTALL_PREFIX/lib/libevent.a $INSTALL_PREFIX/lib/libutf8proc.a $INSTALL_PREFIX/lib/libssl.a $INSTALL_PREFIX/lib/libcrypto.a -lz -lm"
+export LIBS="$INSTALL_PREFIX/lib/libevent.a $INSTALL_PREFIX/lib/libutf8proc.a $INSTALL_PREFIX/lib/libssl.a $INSTALL_PREFIX/lib/libcrypto.a $INSTALL_PREFIX/lib/libncurses.a $INSTALL_PREFIX/lib/libpanel.a $INSTALL_PREFIX/lib/libmenu.a $INSTALL_PREFIX/lib/libform.a -lz -lm"
 export LIBUTF8PROC_CFLAGS="-I$INSTALL_PREFIX/include"
 export LIBUTF8PROC_LIBS="$INSTALL_PREFIX/lib/libutf8proc.a"
 
@@ -95,7 +116,9 @@ export LIBUTF8PROC_LIBS="$INSTALL_PREFIX/lib/libutf8proc.a"
   --enable-utf8proc \
   CFLAGS="-I$INSTALL_PREFIX/include" \
   LDFLAGS="-L$INSTALL_PREFIX/lib" \
-  LIBS="$LIBS"
+  LIBS="$LIBS" \
+  CPPFLAGS="-I$INSTALL_PREFIX/include" \
+  PKG_CONFIG_PATH="$INSTALL_PREFIX/lib/pkgconfig"
 
 make -j"$(sysctl -n hw.ncpu)"
 make install

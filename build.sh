@@ -108,7 +108,7 @@ tar -xzf "tmux-$TMUX_VERSION.tar.gz"
 cd "tmux-$TMUX_VERSION"
 
 # Use static libraries for dependencies
-export LIBS="$INSTALL_PREFIX/lib/libevent.a $INSTALL_PREFIX/lib/libutf8proc.a $INSTALL_PREFIX/lib/libssl.a $INSTALL_PREFIX/lib/libcrypto.a $INSTALL_PREFIX/lib/libncurses.a $INSTALL_PREFIX/lib/libpanel.a $INSTALL_PREFIX/lib/libmenu.a $INSTALL_PREFIX/lib/libform.a -lz -lm"
+export LIBS="$INSTALL_PREFIX/lib/libevent.a $INSTALL_PREFIX/lib/libutf8proc.a $INSTALL_PREFIX/lib/libssl.a $INSTALL_PREFIX/lib/libcrypto.a $INSTALL_PREFIX/lib/libncurses.a $INSTALL_PREFIX/lib/libpanel.a $INSTALL_PREFIX/lib/libmenu.a $INSTALL_PREFIX/lib/libform.a"
 export LIBUTF8PROC_CFLAGS="-I$INSTALL_PREFIX/include"
 export LIBUTF8PROC_LIBS="$INSTALL_PREFIX/lib/libutf8proc.a"
 

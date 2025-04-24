@@ -29,11 +29,12 @@ jobs:
         run: |
           mkdir -p dist/tmux-macos-arm64-${{ github.ref_name }}
           cp ~/install/bin/tmux dist/tmux-macos-arm64-${{ github.ref_name }}/tmux
-          zip -r dist/tmux-macos-arm64-${{ github.ref_name }}.zip dist/tmux-macos-arm64-${{ github.ref_name }}
+          cd dist
+          zip -r tmux-macos-arm64-${{ github.ref_name }}.zip tmux-macos-arm64-${{ github.ref_name }}
 
       - name: Create release
         id: create_release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v1
         with:
           files: dist/tmux-macos-arm64-${{ github.ref_name }}.zip
         env:

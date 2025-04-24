@@ -1,5 +1,8 @@
 tmp/
 output/
 
+build/
+tmux/
+
 # MacOS
 .DS_Store

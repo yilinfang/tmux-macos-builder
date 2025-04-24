@@ -15,7 +15,7 @@ jobs:
 
       - name: Install build dependencies
         run: |
-          brew install automake pkg-config curl
+          brew install automake pkg-config curl ncurses
 
       - name: Run static build script (auto-confirm)
         run: |
